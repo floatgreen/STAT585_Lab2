@@ -13,5 +13,36 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(ggplot2)
 library(sf)
+
+library(ggplot2)
+library(sf)
+
+
+setwd("/home/ying/Desktop/STAT_Spring_2019/STAT585/STAT585_Lab2")
+p <- ggplot() +
+  geom_sf(data = read_sf("data/ME-GIS/Coastline2.shp"), 
+          colour="grey10", fill="grey90") +
+  geom_sf(data = read_sf("data/ME-GIS/Rivers19.shp"), 
+          colour="steelblue", size=0.3) +
+  geom_sf(data = read_sf("data/ME-GIS/PrimaryRoads.shp"), 
+          size = 0.7, colour="grey30") +
+  geom_sf(data = read_sf("data/ME-GIS/Cities.shp")) +
+  theme_bw()
+
+
+p <- p + geom_sf_text(data = read_sf("data/ME-GIS/Cities.shp") ,    aes(label = Name))
+
+
+library(ggspatial)
+
+
+p <- p + annotation_scale(location = "bl")
+
+p <- p + annotation_north_arrow(which_north = "true", location = "tl")
+
+p
+
 ```
+
+
 
