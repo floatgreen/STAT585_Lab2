@@ -1,0 +1,10 @@
+---
+title: "Lab 2"
+author: "Gani Agadilov"
+date: "2/20/2019"
+output: pdf_document
+---
+
+```{r}
+library(sf)
+```
