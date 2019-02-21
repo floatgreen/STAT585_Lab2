@@ -48,7 +48,20 @@ michigan <- states %>%
     n = n())
 michigan
 
-#https://gadm.org/
+
 
 
 ggplot(states, aes(x=long, y=lat, group=group)) + geom_polygon()
+
+#https://gadm.org/
+
+
+#===========================
+
+ozbig <- read_sf("data/gadm36_AUS_shp/gadm36_AUS_1.shp")
+oz_st <- maptools::thinnedSpatialPoly(
+  as(ozbig, "Spatial"), tolerance = 0.1, 
+  minarea = 0.001, topologyPreserve = TRUE)
+oz <- st_as_sf(oz_st)
+oz
+is.list(oz$geometry)
