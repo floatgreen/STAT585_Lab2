@@ -49,8 +49,6 @@ michigan <- states %>%
 michigan
 
 
-
-
 ggplot(states, aes(x=long, y=lat, group=group)) + geom_polygon()
 
 #https://gadm.org/
@@ -65,3 +63,19 @@ oz_st <- maptools::thinnedSpatialPoly(
 oz <- st_as_sf(oz_st)
 oz
 is.list(oz$geometry)
+str(oz$geometry[[1]])
+
+
+head(oz$geometry[[1]][[3]][[1]])
+
+
+#Write a helper function to turn one of these matrices into a single data frame with variables long, lat, group, order. Use purrr functionality to create a dataframe ozplus from the geometry variable. Plot the result with the command:
+  
+#  ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
+# to make a dataframe ozplus
+
+# function
+# input is a matrix with two columns
+# output is single data frame with variables long, lat, group, order 
+
+
