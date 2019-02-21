@@ -15,7 +15,7 @@ p <- ggplot() +
 
 
 
-city = read_sf("data/ME-GIS/Cities.shp")
+# city = read_sf("data/ME-GIS/Cities.shp")
 
 # lable cities 
 
@@ -33,7 +33,7 @@ p <- p + annotation_scale(location = "bl")
 
 p + annotation_north_arrow(which_north = "true", location = "tl")
 
-# 
+## project 2 
 
 #library(ggplot2)
 library(maps)
