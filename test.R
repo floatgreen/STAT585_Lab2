@@ -15,7 +15,7 @@ p <- ggplot() +
 
 
 
-city = read_sf("data/ME-GIS/Cities.shp")
+# city = read_sf("data/ME-GIS/Cities.shp")
 
 # lable cities 
 
@@ -33,7 +33,7 @@ p <- p + annotation_scale(location = "bl")
 
 p + annotation_north_arrow(which_north = "true", location = "tl")
 
-# 
+## project 2 
 
 #library(ggplot2)
 library(maps)
@@ -48,7 +48,34 @@ michigan <- states %>%
     n = n())
 michigan
 
+
+ggplot(states, aes(x=long, y=lat, group=group)) + geom_polygon()
+
 #https://gadm.org/
 
 
-ggplot(states, aes(x=long, y=lat, group=group)) + geom_polygon()
+#===========================
+
+ozbig <- read_sf("data/gadm36_AUS_shp/gadm36_AUS_1.shp")
+oz_st <- maptools::thinnedSpatialPoly(
+  as(ozbig, "Spatial"), tolerance = 0.1, 
+  minarea = 0.001, topologyPreserve = TRUE)
+oz <- st_as_sf(oz_st)
+oz
+is.list(oz$geometry)
+str(oz$geometry[[1]])
+
+
+head(oz$geometry[[1]][[3]][[1]])
+
+
+#Write a helper function to turn one of these matrices into a single data frame with variables long, lat, group, order. Use purrr functionality to create a dataframe ozplus from the geometry variable. Plot the result with the command:
+  
+#  ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
+# to make a dataframe ozplus
+
+# function
+# input is a matrix with two columns
+# output is single data frame with variables long, lat, group, order 
+
+
