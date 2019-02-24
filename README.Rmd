@@ -4,6 +4,9 @@ author: "Gani Agadilov, Jing Li and Ying Zheng"
 date: "2/20/2019"
 output: pdf_document
 ---
+
+The link to our reposity https://github.com/floatgreen/STAT585_Lab2
+
 Question 1
 Add labels for the cities, include a scale and show North in a more map typical way.
 ```{r}
@@ -50,7 +53,7 @@ library(purrr)
 library("rgeos")
 
 # Read the shapefile of Australia
-ozbig <- read_sf("gadm36_AUS_shp/gadm36_AUS_1.shp")
+ozbig <- read_sf("data/gadm36_AUS_shp/gadm36_AUS_1.shp")
 oz_st <- maptools::thinnedSpatialPoly(
   as(ozbig, "Spatial"), tolerance = 0.1, 
   minarea = 0.001, topologyPreserve = TRUE)
@@ -85,7 +88,7 @@ We chose Kazakhstan.
 ```{r}
 # Read the shapefile of Kazakhstan
 
-kaz <- read_sf("gadm36_KAZ_shp/gadm36_KAZ_1.shp")
+kaz <- read_sf("data/gadm36_KAZ_shp/gadm36_KAZ_1.shp")
 oz_st <- maptools::thinnedSpatialPoly(
   as(kaz, "Spatial"), tolerance = 0.1, 
   minarea = 0.001, topologyPreserve = TRUE)
