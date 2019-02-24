@@ -1,0 +1,121 @@
+---
+title: "Lab2"
+author: "Gani Agadilov, Jing Li and Ying Zheng"
+date: "2/20/2019"
+output: pdf_document
+---
+Question 1
+Add labels for the cities, include a scale and show North in a more map typical way.
+```{r}
+library(ggplot2)
+library(sf)
+library(ggspatial)
+
+p <- ggplot() +
+  geom_sf(data = read_sf("data/ME-GIS/Coastline2.shp"), 
+          colour="grey10", fill="grey90") +
+  geom_sf(data = read_sf("data/ME-GIS/Rivers19.shp"), 
+          colour="steelblue", size=0.3) +
+  geom_sf(data = read_sf("data/ME-GIS/PrimaryRoads.shp"), 
+          size = 0.7, colour="grey30") +
+  geom_sf(data = read_sf("data/ME-GIS/Cities.shp")) +
+  theme_bw()
+
+p + geom_sf_text(data = read_sf("data/ME-GIS/Cities.shp"),aes(label = Name))+annotation_scale(location = "bl")+ annotation_north_arrow(which_north = "true", location ="tl")
+
+```
+Quick review
+```{r}
+library(maps)
+library(dplyr)
+
+states <- map_data("state")
+head(states)
+
+michigan <- 
+  states %>% 
+  filter(region=="michigan") %>%
+  group_by(group) %>% 
+  summarize(
+    region = region[1],
+    n = n())
+michigan
+
+ggplot(states, aes(x=long, y=lat, group=group)) + geom_polygon()
+```
+
+Question 2. Write a helper fucntion to turn one of these matrices into a single data frame with variables long, lat, group, order.Create a dataframe ozplus from the geometry variable. Plot the result. 
+```{r}
+library(purrr)
+library("rgeos")
+
+# Read the shapefile of Australia
+ozbig <- read_sf("gadm36_AUS_shp/gadm36_AUS_1.shp")
+oz_st <- maptools::thinnedSpatialPoly(
+  as(ozbig, "Spatial"), tolerance = 0.1, 
+  minarea = 0.001, topologyPreserve = TRUE)
+oz <- st_as_sf(oz_st)
+
+#Check for the list
+is.list(oz$geometry)
+
+oz$geometry[[1]][[3]][[1]]
+
+geometry <- oz$geometry
+
+# Helper fucntion to turn one of these matrices into a single data frame with variables long, lat, group, order. 
+helper <- function(y) {
+  data <- data.frame(long = y[, 1],
+                     lat  = y[, 2], 
+                     groups = rep(rnorm(1),nrow(y)),
+                     order = 1:nrow(y))
+  data
+}
+
+# In order to receive list of matrices, we used the flatten 
+matrix <- geometry %>% flatten() %>% flatten()
+
+
+ozplus <- matrix %>% purrr::map_df(.x = ., .id ="group", .f = helper)
+
+# Plot of the Australia
+ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
+```
+We chose Kazakhstan.
+```{r}
+# Read the shapefile of Kazakhstan
+
+kaz <- read_sf("gadm36_KAZ_shp/gadm36_KAZ_1.shp")
+oz_st <- maptools::thinnedSpatialPoly(
+  as(kaz, "Spatial"), tolerance = 0.1, 
+  minarea = 0.001, topologyPreserve = TRUE)
+oz <- st_as_sf(oz_st)
+
+#Check for the list
+is.list(oz$geometry)
+
+geometry <- oz$geometry
+
+# Helper fucntion to turn one of these matrices into a single data frame with variables long, lat, group, order. 
+helper <- function(y) {
+  data <- data.frame(long = y[, 1],
+                     lat  = y[, 2], 
+                     groups = rep(rnorm(1),nrow(y)),
+                     order = 1:nrow(y))
+  data
+}
+# In order to receive list of matrices, we used the flatten 
+matrix <- geometry %>% flatten() %>% flatten()
+
+# By using  purrr functionality, we create the dataframe
+ozplus <- matrix %>% purrr::map_df(.x = ., .id ="group", .f = helper)
+
+# Plot of the Kazakhstan
+ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
+
+```
+
+
+
+
+
